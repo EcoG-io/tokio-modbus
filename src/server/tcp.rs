@@ -7,7 +7,9 @@ use std::{io, net::SocketAddr};
 
 use async_trait::async_trait;
 use futures::{self, Future};
-use futures_util::{future::FutureExt as _, sink::SinkExt as _, stream::StreamExt as _};
+use futures_util::{
+    future::FutureExt as _, sink::SinkExt as _, stream::StreamExt as _, TryFutureExt as _,
+};
 use socket2::{Domain, Socket, Type};
 use tokio::{
     io::{AsyncRead, AsyncWrite},
@@ -157,8 +159,7 @@ where
         let hdr = request.hdr;
         let OptionalResponsePdu(Some(response_pdu)) = service
             .call(request.into())
-            .await
-            .map_err(Into::into)?
+            .map_err(Into::into).await?
             .into() else {
                 log::trace!("Sending no response for request {hdr:?}");
                 continue;
