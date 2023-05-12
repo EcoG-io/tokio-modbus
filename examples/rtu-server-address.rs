@@ -5,8 +5,6 @@
 
 use std::{thread, time::Duration};
 
-use futures::future;
-
 use tokio_modbus::{prelude::*, server::rtu::Server};
 
 struct Service {

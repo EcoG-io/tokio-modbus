@@ -211,8 +211,6 @@ mod tests {
 
     use crate::{prelude::*, server::Service};
 
-    use futures::future;
-
     #[tokio::test]
     async fn service_wrapper() {
         #[derive(Clone)]
