@@ -220,14 +220,14 @@ mod tests {
             response: Response,
         }
 
+        #[async_trait]
         impl Service for DummyService {
             type Request = Request;
             type Response = Response;
             type Error = io::Error;
-            type Future = future::Ready<Result<Self::Response, Self::Error>>;
 
-            fn call(&self, _: Self::Request) -> Self::Future {
-                future::ready(Ok(self.response.clone()))
+            async fn call(&self, _: Self::Request) -> Result<Self::Response, Self::Error> {
+                Ok(self.response.clone())
             }
         }
 

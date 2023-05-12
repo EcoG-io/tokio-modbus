@@ -13,21 +13,21 @@ struct Service {
     slave: Slave,
 }
 
+#[async_trait::async_trait]
 impl tokio_modbus::server::Service for Service {
     type Request = SlaveRequest;
     type Response = Option<Response>;
     type Error = std::io::Error;
-    type Future = future::Ready<Result<Self::Response, Self::Error>>;
 
-    fn call(&self, req: Self::Request) -> Self::Future {
+    async fn call(&self, req: Self::Request) -> Result<Self::Response, Self::Error> {
         if req.slave != self.slave.into() {
-            return future::ready(Ok(None));
+            return Ok(None);
         }
         match req.request {
             Request::ReadInputRegisters(_addr, cnt) => {
                 let mut registers = vec![0; cnt.into()];
                 registers[2] = 0x77;
-                future::ready(Ok(Some(Response::ReadInputRegisters(registers))))
+                Ok(Some(Response::ReadInputRegisters(registers)))
             }
             _ => unimplemented!(),
         }
