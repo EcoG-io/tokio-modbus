@@ -33,7 +33,9 @@ pub use self::slave::{Slave, SlaveId};
 mod codec;
 
 mod frame;
-pub use self::frame::{Address, FunctionCode, Quantity, Request, Response};
+pub use self::frame::{
+    Address, Exception, ExceptionResponse, FunctionCode, Quantity, Request, Response, ResponsePdu,
+};
 
 mod service;
 
